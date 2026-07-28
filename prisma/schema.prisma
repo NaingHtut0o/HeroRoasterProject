@@ -7,17 +7,62 @@ datasource db {
   provider = "sqlite"
 }
 
+enum Role {
+  USER
+  ADMIN
+  GROUP
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Character {
   id        String   @id @default(cuid())
   name      String
-  role      String
-  element   String
   bio       String
   hp        Int
   attack    Int
   defense   Int
   speed     Int
-  color     String
   imageUrl  String
+  
+  jobId      String
+  job        Job      @relation(fields: [jobId], references: [id])
+
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id])
+
+  rarityId    String
+  rarity      Rarity    @relation(fields: [rarityId], references: [id])
+  
   createdAt DateTime @default(now())
+}
+
+model Job {
+  id          String      @id @default(uuid())
+  name        String      @unique // e.g., "Warrior", "Mage"
+  description String?
+  iconUrl     String?
+  characters  Character[]
+}
+
+model Attribute {
+  id          String      @id @default(uuid())
+  name        String      @unique // e.g., "Fire", "Water"
+  iconUrl     String?     // e.g., "/icons/fire.svg"
+  characters  Character[]
+}
+
+model Rarity {
+  id          String      @id @default(uuid())
+  name        String      @unique // e.g., "Legendary", "Epic"
+  colorHex    String      // e.g., "#FFD700"
+  characters  Character[]
 }

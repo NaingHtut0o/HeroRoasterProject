@@ -23,7 +23,7 @@ export default function RosterClient({ characters }: { characters: CharacterData
               className="group cursor-pointer flex flex-col items-center text-center transition-all duration-300"
             >
               <div className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-full overflow-hidden border-2 border-gray-800 group-hover:border-indigo-500 group-hover:scale-110 group-hover:shadow-[0_0_25px_rgba(99,102,241,0.4)] transition-all duration-300 bg-gray-900 mb-3 flex items-center justify-center">
-                <div className={`absolute inset-0 bg-gradient-to-br ${char.rarity.colorHex} opacity-30 group-hover:opacity-60 transition-opacity`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${char.rarity.colorStyle} opacity-30 group-hover:opacity-60 transition-opacity`} />
                 <img 
                   src={char.imageUrl} 
                   alt={char.name}
@@ -64,7 +64,7 @@ export default function RosterClient({ characters }: { characters: CharacterData
               <div className="inline-block px-3 py-1 mb-4 rounded-full bg-gray-800 text-xs font-bold uppercase tracking-wider text-gray-300 w-fit border border-gray-700">
                 {selectedChar.job.name} • {selectedChar.attribute.name}
               </div>
-              <h2 className={`text-5xl font-bold mb-6 bg-gradient-to-r ${selectedChar.rarity.colorHex} text-transparent bg-clip-text`}>
+              <h2 className={`text-5xl font-bold mb-6 bg-gradient-to-r ${selectedChar.rarity.colorStyle} text-transparent bg-clip-text`}>
                 {selectedChar.name}
               </h2>
               <p className="text-gray-300 text-base leading-relaxed">

@@ -9,20 +9,20 @@ async function main() {
   const raritiesData = [
     {
       name: "Normal",
-      colorHex: "from-slate-600 to-gray-700",
+      colorStyle: "from-slate-600 to-gray-700",
     },
     {
       name: "Rare",
-      colorHex: "from-blue-600 to-cyan-500",
+      colorStyle: "from-blue-600 to-cyan-500",
     },
     {
       name: "Epic",
-      colorHex: "from-purple-600 to-pink-500",
+      colorStyle: "from-purple-600 to-pink-500",
     },
     {
       name: "Legendary",
       // Radiant multi-color gradient style
-      colorHex: "from-amber-400 via-rose-500 to-indigo-500 animate-pulse",
+      colorStyle: "from-amber-400 via-rose-500 to-indigo-500 animate-pulse",
     },
   ];
 
@@ -40,21 +40,25 @@ async function main() {
       name: "Warrior",
       description: "Frontline melee tank and physical powerhouse.",
       iconUrl: "/icons/warrior.svg",
+      colorStyle: "from-red-500 to-rose-700", // Fiery Red/Rose
     },
     {
       name: "Mage",
       description: "Master of arcane burst magic and crowd control.",
       iconUrl: "/icons/mage.svg",
+      colorStyle: "from-blue-500 via-indigo-500 to-cyan-400", // Arcane Blue/Cyan
     },
     {
       name: "Rogue",
       description: "Swift assassin specializing in critical hits and evasion.",
       iconUrl: "/icons/rogue.svg",
+      colorStyle: "from-emerald-400 to-teal-600", // Shadowy Emerald
     },
     {
       name: "Paladin",
       description: "Holy defender balancing heavy armor with restorative light.",
       iconUrl: "/icons/paladin.svg",
+      colorStyle: "from-amber-300 via-yellow-400 to-amber-600", // Radiant Gold
     },
   ];
 
@@ -71,22 +75,27 @@ async function main() {
     {
       name: "Fire",
       iconUrl: "/icons/fire.svg",
+      colorStyle: "from-amber-500 via-orange-500 to-red-600", // Blazing Orange
     },
     {
       name: "Water",
       iconUrl: "/icons/water.svg",
+      colorStyle: "from-cyan-400 to-blue-600", // Oceanic Cyan/Blue
     },
     {
       name: "Earth",
       iconUrl: "/icons/earth.svg",
+      colorStyle: "from-lime-400 via-emerald-500 to-green-700", // Forest Lime
     },
     {
       name: "Light",
       iconUrl: "/icons/light.svg",
+      colorStyle: "from-yellow-200 via-amber-300 to-orange-400", // Bright Light
     },
     {
       name: "Void",
       iconUrl: "/icons/void.svg",
+      colorStyle: "from-purple-500 via-fuchsia-600 to-indigo-900", // Deep Void
     },
   ];
 

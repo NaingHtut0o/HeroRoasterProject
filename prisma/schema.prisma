@@ -50,19 +50,24 @@ model Job {
   name        String      @unique // e.g., "Warrior", "Mage"
   description String?
   iconUrl     String?
+  colorStyle    String
   characters  Character[]
+  createdAt DateTime @default(now())
 }
 
 model Attribute {
   id          String      @id @default(uuid())
   name        String      @unique // e.g., "Fire", "Water"
   iconUrl     String?     // e.g., "/icons/fire.svg"
+  colorStyle    String
   characters  Character[]
+  createdAt DateTime @default(now())
 }
 
 model Rarity {
   id          String      @id @default(uuid())
   name        String      @unique // e.g., "Legendary", "Epic"
-  colorHex    String      // e.g., "#FFD700"
+  colorStyle    String      // e.g., "#FFD700"
   characters  Character[]
+  createdAt DateTime @default(now())
 }

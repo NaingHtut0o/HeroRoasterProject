@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="mageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60A5FA" />
+      <stop offset="50%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#22D3EE" />
+    </linearGradient>
+  </defs>
+  <!-- Arcane Staff & Crystal -->
+  <path d="M20 54L40 18" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="44,8 52,20 44,28 36,20" fill="url(#mageGrad)"/>
+  <!-- Magic Rays / Orb Rings -->
+  <circle cx="44" cy="19" r="16" stroke="url(#mageGrad)" stroke-width="2" stroke-dasharray="4 4"/>
+  <path d="M12 28L18 30M16 16L22 20M28 12L30 18" stroke="url(#mageGrad)" stroke-width="3" stroke-linecap="round"/>
+</svg>

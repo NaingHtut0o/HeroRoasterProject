@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="voidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="50%" stop-color="#9333EA" />
+      <stop offset="100%" stop-color="#312E81" />
+    </linearGradient>
+  </defs>
+  <!-- Void Spiral/Eye -->
+  <circle cx="32" cy="32" r="22" stroke="url(#voidGrad)" stroke-width="5" stroke-dasharray="25 10"/>
+  <circle cx="32" cy="32" r="12" fill="url(#voidGrad)"/>
+  <circle cx="32" cy="32" r="4" fill="#F472B6"/>
+</svg>

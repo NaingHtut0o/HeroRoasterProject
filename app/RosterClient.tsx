@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import { CharacterData } from "./page";
+import Link from "next/link";
+import { getSession } from "@/lib/auth";
+import { Role } from "@/src/generated/enums";
 
-export default function RosterClient({ characters }: { characters: CharacterData[] }) {
+export default function RosterClient({ characters, userRole }: { characters: CharacterData[], userRole: Role | undefined }) {
   const [selectedChar, setSelectedChar] = useState<CharacterData | null>(null);
 
   return (
@@ -62,7 +65,13 @@ export default function RosterClient({ characters }: { characters: CharacterData
             {/* LEFT COLUMN: Basic Info */}
             <div className="w-full md:w-1/3 p-8 flex flex-col justify-center z-10">
               <div className="inline-block px-3 py-1 mb-4 rounded-full bg-gray-800 text-xs font-bold uppercase tracking-wider text-gray-300 w-fit border border-gray-700">
-                {selectedChar.job.name} • {selectedChar.attribute.name}
+                <span className={`bg-gradient-to-r ${selectedChar.job.colorStyle} bg-clip-text text-transparent font-bold`}>
+                                    {selectedChar.job.name}
+                </span>
+                <span> • </span>
+                <span className={`bg-gradient-to-r ${selectedChar.attribute.colorStyle} bg-clip-text text-transparent font-bold`}>
+                                    {selectedChar.attribute.name}
+                </span>
               </div>
               <h2 className={`text-5xl font-bold mb-6 bg-gradient-to-r ${selectedChar.rarity.colorStyle} text-transparent bg-clip-text`}>
                 {selectedChar.name}
@@ -70,6 +79,27 @@ export default function RosterClient({ characters }: { characters: CharacterData
               <p className="text-gray-300 text-base leading-relaxed">
                 {selectedChar.bio}
               </p>
+
+              {/* EDIT BUTTON */}
+              { userRole === "ADMIN" &&  (<Link
+                href={`/admin/characters/${selectedChar.id}/edit`}
+                className="mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-all shadow-lg shadow-indigo-600/30 border border-indigo-400/30 w-full sm:w-auto"
+              >
+                <svg 
+                  className="w-4 h-4" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
+                  />
+                </svg>
+                Edit Character
+              </Link>) }
             </div>
 
             {/* CENTER COLUMN: Breaking-out Image */}
@@ -159,8 +189,8 @@ function RadarChart({ stats }: { stats: CharacterData["stats"] }) {
       
       {/* Labels */}
       <span className="absolute top-0 text-[10px] text-green-400 font-mono font-bold">HP</span>
-      <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] text-red-400 font-mono font-bold">DEF</span>
-      <span className="absolute bottom-0 text-[10px] text-blue-400 font-mono font-bold">ATK</span>
+      <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] text-blue-400 font-mono font-bold">DEF</span>
+      <span className="absolute bottom-0 text-[10px] text-red-400 font-mono font-bold">ATK</span>
       <span className="absolute left-0 top-1/2 -translate-y-1/2 text-[10px] text-yellow-400 font-mono font-bold">SPD</span>
     </div>
   );

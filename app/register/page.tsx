@@ -1,0 +1,75 @@
+"use client";
+
+import { useActionState } from "react";
+import Link from "next/link";
+import { registerAction } from "./actions";
+
+export default function RegisterPage() {
+  const [state, formAction, isPending] = useActionState(registerAction, null);
+
+  return (
+    <main className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-2xl">
+        <h1 className="text-3xl font-bold mb-2 text-center text-white">Create Account</h1>
+        <p className="text-sm text-gray-400 mb-6 text-center">
+          Join to create and manage your hero roster
+        </p>
+
+        {state?.error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg text-center">
+            {state.error}
+          </div>
+        )}
+
+        <form action={formAction} className="space-y-4">
+            <div>
+                <label className="block text-xs font-mono text-gray-400 mb-1">NAME</label>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Hero Commander"
+                    className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                />
+            </div>
+
+            <div>
+                <label className="block text-xs font-mono text-gray-400 mb-1">EMAIL</label>
+                <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="player@game.com"
+                    className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                />
+            </div>
+
+            <div>
+                <label className="block text-xs font-mono text-gray-400 mb-1">PASSWORD</label>
+                <input
+                    type="password"
+                    name="password"
+                    required
+                    placeholder="••••••••"
+                    className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                />
+            </div>
+
+            <button
+                type="submit"
+                disabled={isPending}
+                className="w-full py-3 mt-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition-colors disabled:opacity-50"
+            >
+                {isPending ? "Creating Account..." : "Register"}
+            </button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-gray-400">
+          Already have an account?{" "}
+            <Link href="/login" className="text-indigo-400 hover:text-indigo-300 font-medium">
+                Sign In
+            </Link>
+        </p>
+      </div>
+    </main>
+  );
+}

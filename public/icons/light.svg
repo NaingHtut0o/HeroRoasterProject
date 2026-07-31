@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="lightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+  </defs>
+  <!-- Sun/Star Core -->
+  <polygon points="32,6 38,24 56,24 42,34 47,52 32,41 17,52 22,34 8,24 26,24" fill="url(#lightGrad)"/>
+  <!-- Center Glow -->
+  <circle cx="32" cy="32" r="7" fill="#FFFBEB"/>
+</svg>

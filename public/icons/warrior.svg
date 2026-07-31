@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="warriorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EF4444" />
+      <stop offset="100%" stop-color="#991B1B" />
+    </linearGradient>
+  </defs>
+  <!-- Crossed Swords -->
+  <path d="M14 14L42 42M22 14L14 22M22 22L18 18" stroke="url(#warriorGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M50 14L22 42M42 14L50 22M42 22L46 18" stroke="url(#warriorGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Shield/Hilt Details -->
+  <circle cx="18" cy="46" r="4" fill="url(#warriorGrad)" />
+  <circle cx="46" cy="46" r="4" fill="url(#warriorGrad)" />
+  <path d="M28 50L32 58L36 50" stroke="url(#warriorGrad)" stroke-width="3" stroke-linecap="round"/>
+</svg>

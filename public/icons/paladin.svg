@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="paladinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+  <!-- Holy Shield -->
+  <path d="M32 10L50 18V32C50 44 32 54 32 54C32 54 14 44 14 32V18L32 10Z" fill="url(#paladinGrad)" opacity="0.2" stroke="url(#paladinGrad)" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Cross Emblem -->
+  <path d="M32 20V42M21 28H43" stroke="url(#paladinGrad)" stroke-width="4" stroke-linecap="round"/>
+</svg>

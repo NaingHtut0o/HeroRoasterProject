@@ -97,7 +97,7 @@ export default async function RosterPage() {
 
       {/* Roster View */}
       <main className="p-6">
-        <RosterClient characters={characters} />
+        <RosterClient characters={characters} userRole={session?.role} />
       </main>
     </div>
   );

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="earthGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A3E635" />
+      <stop offset="50%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+  </defs>
+  <!-- Leaf / Crystal Spike -->
+  <path d="M32 8C18 20 12 36 20 48C28 60 48 54 52 40C56 26 44 14 32 8Z" fill="url(#earthGrad)"/>
+  <!-- Vein line -->
+  <path d="M24 44C32 38 36 26 38 16" stroke="#ECFDF5" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+</svg>

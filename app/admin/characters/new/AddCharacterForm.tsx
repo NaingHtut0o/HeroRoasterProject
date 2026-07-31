@@ -1,19 +1,35 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { createCharacterAction, ActionState } from "../actions";
-import { Job, Attribute, Rarity } from "@/src/generated/client";
+import { Job, Attribute, Rarity, Character } from "@/src/generated/client";
 import Link from "next/link";
 import RarityPicker from "./RarityPicker";
+import AttributePicker from "./AttributePicker";
+import JobPicker from "./JobPicker";
 
 type Props = {
     jobs: Job[];
     attributes: Attribute[];
     rarities: Rarity[];
+    initialData?: Character | null;
 };
 
-export default function AddCharacterForm({ jobs, attributes, rarities}: Props)
+export default function AddCharacterForm({ jobs, attributes, rarities, initialData }: Props)
 {
+    const isEditing = Boolean(initialData?.id);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(
+        initialData?.imageUrl || null
+    );
+
+    // Optional: Dynamic live preview when user selects a new file
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
+
     const [state, formAction, isPending] = useActionState<ActionState, FormData>(
         createCharacterAction,
         null
@@ -21,12 +37,12 @@ export default function AddCharacterForm({ jobs, attributes, rarities}: Props)
 
     return(
         <form
-            action={formAction}
-            className="space-y-6 max-w-2xl mx-auto bg-gray-900 border border-gray-800 p-8 rounded-2xl shadow-2xl"
-            >
+        action={formAction}
+        className="space-y-6 max-w-2xl mx-auto bg-gray-900 border border-gray-800 p-8 rounded-2xl shadow-2xl"
+        >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-gray-800 pb-4">
-                <h2 className="text-2xl font-bold text-white">Add New Hero</h2>
+                <h2 className="text-2xl font-bold text-white">{isEditing ? `Edit ${initialData?.name}` : "Add New Hero"}</h2>
                 <Link
                 href="/"
                 className="text-xs font-mono text-gray-400 hover:text-white transition-colors"
@@ -42,6 +58,8 @@ export default function AddCharacterForm({ jobs, attributes, rarities}: Props)
                 </div>
             )}
 
+            {isEditing && <input type="hidden" name="characterId" value={initialData?.id} />}
+
             {/* Name Input */}
             <div className="md:col-span-2">
                 <label className="block text-xs font-mono text-gray-400 mb-1">HERO NAME</label>
@@ -49,55 +67,42 @@ export default function AddCharacterForm({ jobs, attributes, rarities}: Props)
                     type="text"
                     name="name"
                     required
+                    defaultValue={initialData?.name || ""}
                     placeholder="e.g. Kaelen Flameheart"
                     className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors"
                 />
             </div>
 
             {/* Job Select */}
-            <div>
-                <label className="block text-xs font-mono text-gray-400 mb-1">JOB / CLASS</label>
-                <select
-                    name="jobId"
-                    required
-                    className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                >
-                    <option value="">Select Job...</option>
-                    {jobs.map((j) => (
-                    <option key={j.id} value={j.id}>
-                        {j.name}
-                    </option>
-                    ))}
-                </select>
-            </div>
+            <JobPicker jobs={jobs} selectedJob={initialData?.jobId || ""} />
 
             {/* Attribute Select */}
-            <div>
-                <label className="block text-xs font-mono text-gray-400 mb-1">ELEMENT / ATTRIBUTE</label>
-                <select
-                    name="attributeId"
-                    required
-                    className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors"
-                >
-                    <option value="">Select Element...</option>
-                    {attributes.map((a) => (
-                    <option key={a.id} value={a.id}>
-                        {a.name}
-                    </option>
-                    ))}
-                </select>
-            </div>
+            <AttributePicker attributes={attributes} selectedAttribute={initialData?.attributeId || ""} />
 
             {/* Rarity Select */}
-            <RarityPicker rarities={rarities} />
+            <RarityPicker rarities={rarities} selectedRarity={initialData?.rarityId || ""} />
 
             {/* Image URL Input */}
             <div>
                 <label className="block text-xs font-mono text-gray-400 mb-1">IMAGE FILE</label>
+
+                {previewUrl && (
+                    <div className="flex items-center gap-4 p-3 bg-gray-950 border border-gray-800 rounded-lg">
+                        <img
+                            src={previewUrl}
+                            alt="Character preview"
+                            className="w-16 h-16 object-cover rounded-md border border-gray-700"
+                        />
+                        <span className="text-xs text-gray-400 font-mono">
+                            {isEditing ? "Current image active" : "New upload preview"}
+                        </span>
+                    </div>
+                    )}
+
                 <input
                     type="file"
                     name="imageFile"
-                    required
+                    required={!isEditing}
                     className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors"
                 />
             </div>
@@ -108,6 +113,7 @@ export default function AddCharacterForm({ jobs, attributes, rarities}: Props)
                 <textarea
                     name="bio"
                     rows={3}
+                    defaultValue={initialData?.bio || ""}
                     placeholder="Write character backstory..."
                     className="w-full px-4 py-2.5 bg-gray-950 border border-gray-800 rounded-lg text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"
                 />
@@ -118,10 +124,10 @@ export default function AddCharacterForm({ jobs, attributes, rarities}: Props)
                 <label className="block text-xs font-mono text-gray-400 mb-2">BASE STATS (1 - 100)</label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-950 p-4 rounded-xl border border-gray-800">
                 {[
-                    { label: "HP", name: "hp", def: 85 },
-                    { label: "ATTACK", name: "attack", def: 90 },
-                    { label: "DEFENSE", name: "defense", def: 70 },
-                    { label: "SPEED", name: "speed", def: 60 },
+                    { label: "HP", name: "hp", def: initialData?.hp || 85 },
+                    { label: "ATTACK", name: "attack", def: initialData?.attack || 90 },
+                    { label: "DEFENSE", name: "defense", def: initialData?.defense || 70 },
+                    { label: "SPEED", name: "speed", def: initialData?.speed || 60 },
                 ].map((stat) => (
                     <div key={stat.name}>
                     <label className="block text-[10px] font-mono text-gray-400 mb-1">{stat.label}</label>
@@ -143,7 +149,7 @@ export default function AddCharacterForm({ jobs, attributes, rarities}: Props)
                 disabled={isPending}
                 className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition-colors disabled:opacity-50"
             >
-                {isPending ? "Adding Hero..." : "Create Hero"}
+                {isPending ? "Saving..." : isEditing ? "Update Hero" : "Create Hero"}
             </button>
         </form>
     );

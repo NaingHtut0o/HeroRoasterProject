@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Rarity } from "@/src/generated/client";
 
-export default function RarityPicker({ rarities }: { rarities: Rarity[] }) {
-  const [selectedRarityId, setSelectedRarityId] = useState<string>("");
+export default function RarityPicker({ rarities, selectedRarity }: { rarities: Rarity[], selectedRarity: string | null }) {
+  const [selectedRarityId, setSelectedRarityId] = useState<string>(selectedRarity || "");
 
   return (
     <div>
@@ -18,7 +18,7 @@ export default function RarityPicker({ rarities }: { rarities: Rarity[] }) {
             <button
               key={r.id}
               type="button"
-              onClick={() => setSelectedRarityId(r.id)}
+              onClick={() => isSelected? setSelectedRarityId("") : setSelectedRarityId(r.id)}
               className={`px-3 py-2 rounded-lg border text-sm font-bold transition-all text-left flex items-center justify-between ${
                 isSelected
                   ? "border-indigo-500 bg-gray-900 ring-1 ring-indigo-500"

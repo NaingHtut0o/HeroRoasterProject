@@ -2,12 +2,14 @@
 
 import { useActionState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { loginAction } from "./actions";
 
 export default function LoginPage()
 {
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get("redirectTo") || "/";
+    const registered = searchParams.get("registered") === "true";
 
     const [state, formAction, isPending] = useActionState(loginAction, null);
     
@@ -18,6 +20,13 @@ export default function LoginPage()
                 <p className="text-sm text-gray-400 mb-6 text-center">
                     Sign in to manage your character roster
                 </p>
+
+                {/* Success message on redirect from register */}
+                {registered && (
+                <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm rounded-lg text-center">
+                    Account created successfully! Please sign in.
+                </div>
+                )}
 
                 {state?.error && (
                     <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg text-center">
@@ -58,6 +67,13 @@ export default function LoginPage()
                         {isPending ? "Authenticating..." : "Sign In"}
                     </button>
                 </form>
+
+                <p className="mt-6 text-center text-sm text-gray-400">
+                    Don&apos;t have an account?{" "}
+                    <Link href="/register" className="text-indigo-400 hover:text-indigo-300 font-medium">
+                        Register
+                    </Link>
+                </p>
             </div>
         </main>
   );

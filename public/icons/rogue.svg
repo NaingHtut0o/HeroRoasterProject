@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="rogueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+  </defs>
+  <!-- Dual Daggers -->
+  <path d="M20 50L44 14C44 14 48 22 40 30L20 50Z" fill="url(#rogueGrad)" />
+  <path d="M16 54L22 48" stroke="#6B7280" stroke-width="4" stroke-linecap="round"/>
+  <path d="M44 50L20 14C20 14 16 22 24 30L44 50Z" fill="url(#rogueGrad)" opacity="0.8"/>
+  <path d="M48 54L42 48" stroke="#6B7280" stroke-width="4" stroke-linecap="round"/>
+</svg>

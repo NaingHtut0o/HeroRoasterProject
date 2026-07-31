@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 1. Unauthenticated users trying to access protected pages -> Redirect to /login
-  if (!session && pathname !== "/login") {
+  if (!session && pathname !== "/login" && pathname !== "/register") {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
     return NextResponse.redirect(loginUrl);
@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 3. Authenticated user trying to access /login -> Redirect to home
-  if (session && pathname === "/login") {
+  if (session && (pathname === "/login" || pathname === "/register")) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

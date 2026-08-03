@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 3. Authenticated user trying to access /login -> Redirect to home
-  if (session && (pathname === "/login" || pathname === "/register")) {
+  if (session && (pathname === "/login" || pathname === "/register") && session?.role !== "GUEST") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

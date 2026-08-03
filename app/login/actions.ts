@@ -38,6 +38,7 @@ export async function loginAction(prevState: LoginState, formData: FormData): Pr
     await createSession({
         userId: user.id,
         email: user.email,
+        name: user.name,
         role: user.role,
     });
 

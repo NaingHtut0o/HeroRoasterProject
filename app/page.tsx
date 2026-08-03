@@ -73,7 +73,7 @@ export default async function RosterPage() {
         </div>
 
         <div className="flex items-center gap-4 text-sm">
-          <span className="text-gray-400 font-mono text-xs">{session?.email}</span>
+          <span className="text-gray-400 font-mono text-xs">{session?.name}</span>
 
           {session?.role === "ADMIN" && (
             <Link
@@ -89,7 +89,7 @@ export default async function RosterPage() {
               type="submit"
               className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg text-xs font-medium transition-colors"
             >
-              Logout
+              {session?.role === "GUEST" || !session ? 'Login' : 'Logout' }
             </button>
           </form>
         </div>

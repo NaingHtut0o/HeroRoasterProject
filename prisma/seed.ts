@@ -155,6 +155,8 @@ async function main() {
   }
   
   const hashedPassword = await bcrypt.hash("abc123!@#", 10);
+  
+  const guestPassword = await bcrypt.hash("guest123", 10);
 
   // Create Admin User
   await prisma.user.upsert({
@@ -177,6 +179,18 @@ async function main() {
       name: "Adventurer",
       password: hashedPassword,
       role: "USER",
+    },
+  });
+
+  // Create Guest User
+  await prisma.user.upsert({
+    where: { email: "guest@game.com" },
+    update: {},
+    create: {
+      email: "guest@game.com",
+      name: "Guest",
+      password: guestPassword,
+      role: "GUEST",
     },
   });
 

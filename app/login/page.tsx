@@ -10,6 +10,8 @@ export default function LoginPage()
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get("redirectTo") || "/";
     const registered = searchParams.get("registered") === "true";
+    const guestEmail = "guest@game.com";
+    const guestPassword = "guest123";
 
     const [state, formAction, isPending] = useActionState(loginAction, null);
     
@@ -72,7 +74,18 @@ export default function LoginPage()
                     Don&apos;t have an account?{" "}
                     <Link href="/register" className="text-indigo-400 hover:text-indigo-300 font-medium">
                         Register
-                    </Link>
+                    </Link> | 
+                    <form action={formAction}>
+                        <input type="hidden" name="redirectTo" value={redirectTo} />
+                        <input type="hidden" name="email" value={guestEmail} />
+                        <input type="hidden" name="password" value={guestPassword} />
+                        <button
+                            type="submit"
+                            className="text-indigo-400 hover:text-indigo-300 font-medium"
+                            >
+                            Guest Login
+                        </button>
+                    </form>
                 </p>
             </div>
         </main>

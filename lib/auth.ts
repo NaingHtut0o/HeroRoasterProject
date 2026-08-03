@@ -8,7 +8,8 @@ const JWT_SECRET = new TextEncoder().encode(
 export type SessionPayload = {
     userId: string;
     email: string;
-    role: "USER" | "ADMIN" | "GROUP";
+    name: string;
+    role: "USER" | "ADMIN" | "GROUP" | "GUEST";
 };
 
 export async function createSession(payload: SessionPayload) 

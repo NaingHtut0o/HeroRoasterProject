@@ -15,35 +15,70 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @default(uuid())
+  email           String   @unique
+  password        String
+  name            String
+  role            Role     @default(USER)
+  likes           CharacterLike[] // Relation to Likes
+  commentLikes    CommentLike[]
+  comments        Comment[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Character {
-  id        String   @id @default(cuid())
-  name      String
-  bio       String
-  hp        Int
-  attack    Int
-  defense   Int
-  speed     Int
-  imageUrl  String
-  
-  jobId      String
-  job        Job      @relation(fields: [jobId], references: [id])
-
+  id          String   @id @default(cuid())
+  name        String
+  bio         String
+  hp          Int
+  attack      Int
+  defense     Int
+  speed       Int
+  imageUrl    String
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id])
   attributeId String
   attribute   Attribute @relation(fields: [attributeId], references: [id])
-
   rarityId    String
   rarity      Rarity    @relation(fields: [rarityId], references: [id])
-  
-  createdAt DateTime @default(now())
+  likes       CharacterLike[] // Relation to Likes
+  comments    Comment[]
+  createdAt   DateTime @default(now())
+}
+
+// NEW MODEL: Join table mapping User <-> Character
+model CharacterLike {
+  id          String    @id @default(cuid())
+  userId      String
+  characterId String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  @@unique([userId, characterId]) // Prevents duplicate likes from the same user
+}
+
+model Comment {
+  id          String    @id @default(cuid())
+  content     String
+  userId      String?
+  characterId String
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  likes       CommentLike[]
+  @@index([characterId])
+}
+
+model CommentLike {
+  id          String      @id @default(cuid())
+  userId      String
+  commentId   String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment     Comment     @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  @@unique([userId, commentId])
 }
 
 model Job {
@@ -51,24 +86,24 @@ model Job {
   name        String      @unique // e.g., "Warrior", "Mage"
   description String?
   iconUrl     String?
-  colorStyle    String
+  colorStyle  String
   characters  Character[]
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model Attribute {
   id          String      @id @default(uuid())
   name        String      @unique // e.g., "Fire", "Water"
   iconUrl     String?     // e.g., "/icons/fire.svg"
-  colorStyle    String
+  colorStyle  String
   characters  Character[]
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
 
 model Rarity {
   id          String      @id @default(uuid())
   name        String      @unique // e.g., "Legendary", "Epic"
-  colorStyle    String      // e.g., "#FFD700"
+  colorStyle  String      // e.g., "#FFD700"
   characters  Character[]
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }

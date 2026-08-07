@@ -12,21 +12,21 @@ export default function AttributePicker({ attributes, selectedAttribute }: { att
             {/* Hidden input preserves native form submission for Server Actions */}
             <input type="hidden" name="attributeId" value={selectedAttributeId} required />
 
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid sm:grid-cols-5 grid-cols-2 gap-2">
                 { 
                     attributes.map((r) => {
                         const isSelected = selectedAttributeId === r.id;
                         return (
                             <button
-                            key={r.id}
-                            type="button"
-                            onClick={() => isSelected? setSelectedAttributeId("") : setSelectedAttributeId(r.id)}
-                            className={`px-3 py-2 rounded-lg border text-sm font-bold transition-all text-left flex items-center justify-between ${
-                                isSelected
-                                ? "border-indigo-500 bg-gray-900 ring-1 ring-indigo-500"
-                                : "border-gray-800 bg-gray-950 hover:border-gray-700"
-                            }`}
-                            >
+                                key={r.id}
+                                type="button"
+                                onClick={() => isSelected? setSelectedAttributeId("") : setSelectedAttributeId(r.id)}
+                                className={`px-3 py-2 rounded-lg border text-sm font-bold transition-all text-left flex items-center justify-between ${
+                                    isSelected
+                                    ? "border-indigo-500 bg-gray-900 ring-1 ring-indigo-500"
+                                    : "border-gray-800 bg-gray-950 hover:border-gray-700"
+                                }`}
+                                >
                             {/* Actual Gradient Text Rendering */}
                             <div className="flex items-center gap-2">
                                 {/* Render icon if it exists */}

@@ -4,9 +4,9 @@ import { useActionState, useState } from "react";
 import { createCharacterAction, ActionState } from "../actions";
 import { Job, Attribute, Rarity, Character } from "@/src/generated/client";
 import Link from "next/link";
-import RarityPicker from "./RarityPicker";
-import AttributePicker from "./AttributePicker";
-import JobPicker from "./JobPicker";
+import RarityPicker from "../../../component/RarityPicker";
+import AttributePicker from "../../../component/AttributePicker";
+import JobPicker from "../../../component/JobPicker";
 
 type Props = {
     jobs: Job[];

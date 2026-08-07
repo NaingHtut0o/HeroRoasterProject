@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { CharacterData } from "./page";
 import Link from "next/link";
-import { getSession } from "@/lib/auth";
 import { Role } from "@/src/generated/enums";
+import LikeButton from "./component/LikeButton";
+import CommentSection from "./component/CommentSection";
 
-export default function RosterClient({ characters, userRole }: { characters: CharacterData[], userRole: Role | undefined }) {
+export default function RosterClient({ characters, userRole, userId }: { characters: CharacterData[], userRole: Role | undefined, userId: string | undefined }) {
   const [selectedChar, setSelectedChar] = useState<CharacterData | null>(null);
 
   return (
@@ -48,62 +49,37 @@ export default function RosterClient({ characters, userRole }: { characters: Cha
       {/* ENLARGED MODAL VIEW */}
       {selectedChar && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-black/90 backdrop-blur-md animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
           onClick={() => setSelectedChar(null)}
         >
+          {/* MODAL CONTAINER */}
           <div 
-            className="relative w-full max-w-5xl bg-gray-900/80 border border-gray-700/50 rounded-3xl shadow-2xl flex flex-col md:flex-row items-stretch"
+            className="relative w-full max-w-4xl h-[90vh] md:h-[85vh] border border-none shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()} 
           >
-            <button 
-              onClick={() => setSelectedChar(null)}
-              className="absolute -top-4 -right-4 z-50 w-10 h-10 flex items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-500 transition-colors shadow-lg border-2 border-gray-900"
-            >
-              ✕
-            </button>
-
-            {/* LEFT COLUMN: Basic Info */}
-            <div className="w-full md:w-1/3 p-8 flex flex-col justify-center z-10">
-              <div className="inline-block px-3 py-1 mb-4 rounded-full bg-gray-800 text-xs font-bold uppercase tracking-wider text-gray-300 w-fit border border-gray-700">
-                <span className={`bg-gradient-to-r ${selectedChar.job.colorStyle} bg-clip-text text-transparent font-bold`}>
-                                    {selectedChar.job.name}
-                </span>
-                <span> • </span>
-                <span className={`bg-gradient-to-r ${selectedChar.attribute.colorStyle} bg-clip-text text-transparent font-bold`}>
-                                    {selectedChar.attribute.name}
-                </span>
-              </div>
-              <h2 className={`text-5xl font-bold mb-6 bg-gradient-to-r ${selectedChar.rarity.colorStyle} text-transparent bg-clip-text`}>
-                {selectedChar.name}
-              </h2>
-              <p className="text-gray-300 text-base leading-relaxed">
-                {selectedChar.bio}
-              </p>
-
-              {/* EDIT BUTTON */}
-              { userRole === "ADMIN" &&  (<Link
-                href={`/admin/characters/${selectedChar.id}/edit`}
-                className="mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-all shadow-lg shadow-indigo-600/30 border border-indigo-400/30 w-full sm:w-auto"
-              >
-                <svg 
-                  className="w-4 h-4" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
+            {/* TOP-RIGHT ACTION BUTTONS */}
+            <div className="absolute -top-4 -right-4 md:-top-5 md:-right-4 z-50 flex items-center gap-1 md:gap-2 mx-1">
+              {userRole === "ADMIN" && (
+                <Link
+                  href={`/admin/characters/${selectedChar.id}/edit`}
+                  title="Edit Character"
+                  className="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shadow-lg border-2 border-gray-900"
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" 
-                  />
-                </svg>
-                Edit Character
-              </Link>) }
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </Link>
+              )}
+              <button
+                onClick={() => setSelectedChar(null)}
+                title="Close"
+                className="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-500 transition-colors shadow-lg border-2 border-gray-900 cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
 
-            {/* CENTER COLUMN: Breaking-out Image */}
-            <div className="w-full md:w-1/3 relative h-64 md:h-auto flex justify-center items-center z-20 pointer-events-none">
+            <div className="w-full relative h-64 flex justify-center items-center z-20 pointer-events-none">
               <img 
                 src={selectedChar.imageUrl} 
                 alt={selectedChar.name}
@@ -111,20 +87,64 @@ export default function RosterClient({ characters, userRole }: { characters: Cha
               />
             </div>
 
-            {/* RIGHT COLUMN: Stats & Chart */}
-            <div className="w-full md:w-1/3 p-8 flex flex-col justify-center z-10 bg-gray-950/50 rounded-r-3xl">
-              <h3 className="text-xl font-bold text-white mb-6">Combat Profiler</h3>
+            {/* ROW 2: CONTENT SECTION */}
+            <div className="flex-1 flex flex-col md:flex-row shrink-0 border border-gray-700/60 rounded-2xl overflow-y-auto md:shrink md:overflow-hidden">
               
-              <div className="space-y-4 mb-8">
-                <StatBar label="HP" value={selectedChar.stats.hp} color="bg-green-500" />
-                <StatBar label="ATK" value={selectedChar.stats.attack} color="bg-red-500" />
-                <StatBar label="DEF" value={selectedChar.stats.defense} color="bg-blue-500" />
-                <StatBar label="SPD" value={selectedChar.stats.speed} color="bg-yellow-500" />
+              {/* COLUMN 1: INFO & STATS */}
+              <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col justify-between md:overflow-y-auto border-b md:border-b-0 md:border-r border-gray-800/80 custom-scrollbar space-y-6">
+                <div className="space-y-4">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-800/80 text-xs font-bold uppercase tracking-wider text-gray-300 border border-gray-700/80 w-fit">
+                    <span className={`bg-gradient-to-r ${selectedChar.job.colorStyle} bg-clip-text text-transparent`}>
+                      {selectedChar.job.name}
+                    </span>
+                    <span>•</span>
+                    <span className={`bg-gradient-to-r ${selectedChar.attribute.colorStyle} bg-clip-text text-transparent`}>
+                      {selectedChar.attribute.name}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <h2 className={`text-3xl font-extrabold bg-gradient-to-r ${selectedChar.rarity.colorStyle} text-transparent bg-clip-text`}>
+                      {selectedChar.name}
+                    </h2>
+                    <LikeButton 
+                      characterId={selectedChar.id} 
+                      initialIsLiked={selectedChar.isLiked} 
+                      initialLikeCount={selectedChar.likeCount} 
+                      userRole={userRole}
+                    />
+                  </div>
+
+                  <div className="relative block">
+                    {/* FLOATED STATS BLOCK (Floats to the right so text flows around and underneath it) */}
+                    <div className="float-right ml-6 mb-4 w-37 p-3.5 bg-gray-950/70 rounded-2xl border border-gray-800/80 space-y-2">
+                      <h4 className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Combat Stats</h4>
+                      <StatBar label="HP" value={selectedChar.stats.hp} color="bg-green-500" />
+                      <StatBar label="ATK" value={selectedChar.stats.attack} color="bg-red-500" />
+                      <StatBar label="DEF" value={selectedChar.stats.defense} color="bg-blue-500" />
+                      <StatBar label="SPD" value={selectedChar.stats.speed} color="bg-yellow-500" />
+                    </div>
+
+                    {/* BIO TEXT */}
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {selectedChar.bio}
+                    </p>
+
+                    {/* Clear float spacing fix */}
+                    <div className="clear-both"></div>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex-grow flex items-center justify-center bg-gray-900/50 rounded-xl p-4 border border-gray-800">
-                <RadarChart stats={selectedChar.stats} />
+              {/* COLUMN 2: COMMENTS */}
+              <div className="w-full md:w-1/2 p-6 sm:p-8 bg-gray-950/40 flex flex-col md:overflow-hidden">
+                <CommentSection
+                  characterId={selectedChar.id}
+                  currentUserId={userId}
+                  currentUserRole={userRole}
+                />
               </div>
+
             </div>
           </div>
         </div>

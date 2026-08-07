@@ -12,7 +12,7 @@ export default function JobPicker({ jobs, selectedJob }: { jobs: Job[], selected
             {/* Hidden input preserves native form submission for Server Actions */}
             <input type="hidden" name="jobId" value={selectedJobId} required />
 
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid sm:grid-cols-4 grid-cols-2 gap-2">
                 { 
                     jobs.map((r) => {
                         const isSelected = selectedJobId === r.id;

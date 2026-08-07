@@ -11,7 +11,7 @@ export default function RarityPicker({ rarities, selectedRarity }: { rarities: R
       {/* Hidden input preserves native form submission for Server Actions */}
       <input type="hidden" name="rarityId" value={selectedRarityId} required />
 
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid sm:grid-cols-4 grid-cols-2 gap-2">
         {rarities.map((r) => {
           const isSelected = selectedRarityId === r.id;
           return (
